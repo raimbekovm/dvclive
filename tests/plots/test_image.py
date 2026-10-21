@@ -152,3 +152,12 @@ def test_cache_images(tmp_dir, dvc_repo, cache):
     live.log_image("image.png", img)
     live.end()
     assert (tmp_dir / "dvclive" / "plots" / "images.dvc").exists() == cache
+
+
+def test_cache_images_without_dvc_repo(tmp_dir):
+    live = Live(save_dvc_exp=False, cache_images=True)
+    img = Image.new("RGB", (10, 10), (250, 250, 250))
+    live.log_image("image.png", img)
+    live.end()
+    assert (tmp_dir / "dvclive" / "plots" / "images" / "image.png").exists()
+    assert not (tmp_dir / "dvclive" / "plots" / "images.dvc").exists()
